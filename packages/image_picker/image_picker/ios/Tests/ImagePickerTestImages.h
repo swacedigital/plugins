@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(class, copy, readonly) NSData *JPGTestData;
 @property(class, copy, readonly) NSData *PNGTestData;
 @property(class, copy, readonly) NSData *GIFTestData;
+@property(class, copy, readonly) NSData *WEBPTestData;
 
 @end
 

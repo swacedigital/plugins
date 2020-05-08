@@ -27,6 +27,11 @@
   XCTAssertEqual(
       [FLTImagePickerMetaDataUtil getImageMIMETypeFromImageData:ImagePickerTestImages.GIFTestData],
       FLTImagePickerMIMETypeGIF);
+
+  // test webp
+  XCTAssertEqual(
+      [FLTImagePickerMetaDataUtil getImageMIMETypeFromImageData:ImagePickerTestImages.WEBPTestData],
+      FLTImagePickerMIMETypeOther);
 }
 
 - (void)testSuffixFromType {
@@ -41,6 +46,10 @@
   // test gif
   XCTAssertEqualObjects(
       [FLTImagePickerMetaDataUtil imageTypeSuffixFromType:FLTImagePickerMIMETypeGIF], @".gif");
+    
+  // test webp
+  XCTAssertEqualObjects(
+      [FLTImagePickerMetaDataUtil imageTypeSuffixFromType:FLTImagePickerMIMETypeGIF], @".webp");
 
   // test other
   XCTAssertNil([FLTImagePickerMetaDataUtil imageTypeSuffixFromType:FLTImagePickerMIMETypeOther]);
@@ -69,6 +78,13 @@
   } else {
     XCTAssert(NO);
   }
+}
+
+- (void)testFailedWriteMetaData {
+  NSData *dataWEBP = ImagePickerTestImages.WEBPTestData;
+
+  NSDictionary *webpMeta = [FLTImagePickerMetaDataUtil getMetaDataFromImageData:dataWEBP];
+  XCTAssert(!webpMeta);
 }
 
 - (void)testConvertImageToData {

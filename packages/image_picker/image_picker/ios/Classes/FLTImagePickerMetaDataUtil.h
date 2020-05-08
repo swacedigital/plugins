@@ -11,6 +11,7 @@ typedef enum : NSUInteger {
   FLTImagePickerMIMETypePNG,
   FLTImagePickerMIMETypeJPEG,
   FLTImagePickerMIMETypeGIF,
+  FLTImagePickerMIMETypeWEBP,
   FLTImagePickerMIMETypeOther,
 } FLTImagePickerMIMEType;
 

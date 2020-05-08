@@ -8,6 +8,7 @@
 static const uint8_t kFirstByteJPEG = 0xFF;
 static const uint8_t kFirstBytePNG = 0x89;
 static const uint8_t kFirstByteGIF = 0x47;
+static const uint8_t kfirstByteWEBP = 0x82;
 
 NSString *const kFLTImagePickerDefaultSuffix = @".jpg";
 const FLTImagePickerMIMEType kFLTImagePickerMIMETypeDefault = FLTImagePickerMIMETypeJPEG;
@@ -24,6 +25,8 @@ const FLTImagePickerMIMEType kFLTImagePickerMIMETypeDefault = FLTImagePickerMIME
       return FLTImagePickerMIMETypePNG;
     case kFirstByteGIF:
       return FLTImagePickerMIMETypeGIF;
+    case kfirstByteWEBP:
+      return FLTImagePickerMIMETypeWEBP;
   }
   return FLTImagePickerMIMETypeOther;
 }
@@ -36,6 +39,8 @@ const FLTImagePickerMIMEType kFLTImagePickerMIMETypeDefault = FLTImagePickerMIME
       return @".png";
     case FLTImagePickerMIMETypeGIF:
       return @".gif";
+    case FLTImagePickerMIMETypeWEBP:
+      return @".webp";
     default:
       return nil;
   }
@@ -52,8 +57,12 @@ const FLTImagePickerMIMEType kFLTImagePickerMIMETypeDefault = FLTImagePickerMIME
 + (NSData *)updateMetaData:(NSDictionary *)metaData toImage:(NSData *)imageData {
   NSMutableData *mutableData = [NSMutableData data];
   CGImageSourceRef cgImage = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
+  CFStringRef sourceType = CGImageSourceGetType(cgImage);
+  if (!sourceType) {
+    return nil;
+  }
   CGImageDestinationRef destination = CGImageDestinationCreateWithData(
-      (__bridge CFMutableDataRef)mutableData, CGImageSourceGetType(cgImage), 1, nil);
+      (__bridge CFMutableDataRef)mutableData, sourceType, 1, nil);
   CGImageDestinationAddImageFromSource(destination, cgImage, 0, (__bridge CFDictionaryRef)metaData);
   CGImageDestinationFinalize(destination);
   CFRelease(cgImage);

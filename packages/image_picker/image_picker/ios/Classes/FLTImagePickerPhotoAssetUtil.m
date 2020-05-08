@@ -82,6 +82,10 @@
   if (metaData) {
     data = [FLTImagePickerMetaDataUtil updateMetaData:metaData toImage:data];
   }
+  
+  if (!data) {
+    return nil;
+  }
 
   return [self createFile:data suffix:suffix];
 }
