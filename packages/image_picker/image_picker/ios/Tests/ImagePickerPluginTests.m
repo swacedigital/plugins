@@ -10,6 +10,7 @@
 @interface FLTImagePickerPlugin (Test)
 @property(copy, nonatomic) FlutterResult result;
 - (void)handleSavedPath:(NSString *)path;
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
 @end
 
 @interface ImagePickerPluginTests : XCTestCase
@@ -109,6 +110,25 @@
   };
   [plugin handleSavedPath:@"test"];
   [plugin handleSavedPath:@"test"];
+}
+
+- (void)testPluginPickImageDeviceCancelClickMultipleTimes {
+  if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+    return;
+  }
+  FLTImagePickerPlugin *plugin =
+      [[FLTImagePickerPlugin alloc] initWithViewController:[UIViewController new]];
+  FlutterMethodCall *call =
+      [FlutterMethodCall methodCallWithMethodName:@"pickImage"
+                                        arguments:@{@"source" : @(0), @"cameraDevice" : @(1)}];
+  [plugin handleMethodCall:call
+                    result:^(id _Nullable r){
+                    }];
+  plugin.result = ^(id result) {
+
+  };
+  [plugin imagePickerControllerDidCancel:[plugin getImagePickerController]];
+  [plugin imagePickerControllerDidCancel:[plugin getImagePickerController]];
 }
 
 @end
